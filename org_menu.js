@@ -7,24 +7,24 @@ let Org_menu = () => {
     <View>
       <Text style={{fontSize: 24, padding: 5, textAlign: 'center'}}>Name of Organization:</Text>
       <TextInput
-        style={{ backgroundColor: 'white', height: 40, borderColor: 'gray', borderWidth: 1, padding: 5, textAlign: 'left', width: 300, alignSelf: 'center'}}
+        style={styles.text_box}
         multiline={true}
         placeholder="Enter organization name..."
         /> 
-        <Text style={{fontSize: 24, paddingTop: 20, paddingBottom: 5, textAlign: 'center'}}>Location of Start:</Text>
+        <Text style={styles.heading}>Location of Start:</Text>
             <TextInput
-                style={{ backgroundColor: 'white', height: 40, borderColor: 'gray', borderWidth: 1, padding: 5, width: 300, alignSelf: 'center', textAlign: 'left' }}
+                style={styles.text_box}
                 multiline={true}
                 placeholder="Enter Location..."
             /> 
-        <Text style={{fontSize: 24, paddingTop: 20, paddingBottom: 5, textAlign: 'center'}}>Organization Email:</Text>
+        <Text style={styles.heading}>Organization Email:</Text>
             <TextInput
-                style={{ backgroundColor: 'white', height: 40, borderColor: 'gray', borderWidth: 1, padding: 5, textAlign: 'left', width: 300, alignSelf: 'center'}}
+                style={styles.text_box}
                 multiline={true}
                 placeholder="Enter organization's email address..."
         />                     
     <View>
-    <Text style={{fontSize: 24, paddingTop: 20, paddingBottom: 5, textAlign: 'center'}}>Will You (Organization User) Also Be Cleaning Up?</Text>
+    <Text style={styles.heading}>Will You (Organization User) Also Be Cleaning Up?</Text>
         <View style={{width: 100, 
                     height: 40, 
                     alignSelf: 'center', 
@@ -32,7 +32,8 @@ let Org_menu = () => {
                     borderWidth: 1, 
                     marginBottom: 10,
                     marginTop: 10,
-                    backgroundColor: 'white'
+                    backgroundColor: 'white',
+                    borderRadius: 10
                     }}>
             <Button title="Yes" color="black"></Button>
         </View>
@@ -42,7 +43,8 @@ let Org_menu = () => {
                     borderColor: 'gray', 
                     borderWidth: 1, 
                     marginBottom: 20,
-                    backgroundColor: 'white'
+                    backgroundColor: 'white',
+                    borderRadius: 10
                     }}>
             <Button title="No" color="black"></Button>
         </View>
@@ -62,6 +64,27 @@ let Org_menu = () => {
   );
 };
 export default Org_menu;
+
+const styles = StyleSheet.create({
+  heading: {
+    fontSize: 24, 
+    paddingTop: 20, 
+    paddingBottom: 5, 
+    textAlign: 'center'
+  },
+  text_box: {
+    backgroundColor: 'white', 
+    height: 40, 
+    borderColor: 'gray', 
+    borderWidth: 1, 
+    padding: 5, 
+    width: 300, 
+    alignSelf: 'center', 
+    textAlign: 'left', 
+    borderRadius: 10
+  }
+
+})
 
 
 
