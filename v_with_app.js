@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       flexWrap: 'wrap',
       marginTop: 200,
-      justifyContent: 'space-evenly', // Adjust as needed
+      justifyContent: 'space-evenly',
     },
     box: {
         borderWidth: 1,
