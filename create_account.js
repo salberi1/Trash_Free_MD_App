@@ -9,6 +9,10 @@ let Create_Account = () => {
     const [password, setPassword] = useState('');
     const [confirm_password, set_confirm_password] = useState('');
     const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone_number, setPhoneNumber] = useState('');
+    const [firstname, setFirstName] = useState('');
+    const [lastname, setLastName] = useState('');
 
     const confirmAccount = () => {
         if (password === confirm_password){
@@ -32,7 +36,7 @@ let Create_Account = () => {
             <TextInput
                 style={styles.text_box}
                 placeholder="password..."
-                secureTextEntry={true}
+                secureTextEntry={true} // encrypts the password
                 onChangeText={(text) => setPassword(text)}
             />
             <Text>Confirm Password: </Text>
@@ -46,12 +50,15 @@ let Create_Account = () => {
             <TextInput
                 style={styles.text_box}
                 placeholder="email..."
-                multiline={true} />
+                multiline={true}
+                onChangeText={(text) => setEmail(text)}
+                />
             <Text>Enter Phone-Number: </Text>
             <TextInput 
                 style={styles.text_box}
                 placeholder="phone-number..."
                 multiline={true}
+                onChangeText={(text) => setPhoneNumber(text)}
             />
 
             <Text>Enter First-Name: </Text>
@@ -59,6 +66,7 @@ let Create_Account = () => {
                 style={styles.text_box}
                 placeholder="first-name..."
                 multiline={true}
+                onChangeText={(text) => setFirstName(text)}
             />
 
             <Text>Enter Last-Name: </Text>
@@ -66,6 +74,7 @@ let Create_Account = () => {
                 style={styles.text_box}
                 placeholder="last-name..."
                 multiline={true}
+                onChangeText={(text) => setLastName(text)}
             />
 
             <TouchableOpacity style={styles.container} onPress={confirmAccount}>
