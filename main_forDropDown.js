@@ -12,28 +12,6 @@ import MyDropDownPicker from './dropDownMenu';
     { label: 'Volunteer with organization using app', value: 'Volunteer with organization using app' },
     { label: 'Volunteer with organization not using app', value: 'Volunteer with organization not using app' },
   ];
-
-  const handleNavigation = (selectedValue) => {
-    // Perform navigation based on the selected label
-    switch (selectedValue) {
-      case 'Individual':
-        navigation.navigate('Individual/Volunteer with organization not using app');
-        break;
-      case 'Organization':
-        navigation.navigate('Organization');
-        break;
-      case 'Volunteer with organization using app':
-        navigation.navigate('Volunteer with organization using app');
-        break;
-      case 'Volunteer with organization not using app':
-        navigation.navigate('Individual/Volunteer with organization not using app');
-        break;
-      default:
-        break;
-    }
-
-  }
-
   return ( 
       <View  style={styles.container}>
         <View style={styles.header}>
@@ -44,10 +22,7 @@ import MyDropDownPicker from './dropDownMenu';
         isOpen={isOpen} 
         setIsOpen={setIsOpen} 
         currentValue={currentValue}
-        setCurrentValue={(val) => {
-          setCurrentValue(val);
-          handleNavigation(val);
-        }}
+        setCurrentValue={(val)=>setCurrentValue(val)} 
         navigation={navigation}
         />
     </View>
