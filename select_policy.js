@@ -21,7 +21,7 @@ let Select_Policy_Ind = () => {
 
 
     return(
-        <View>
+        <View style={styles.background}>
             <Text style={styles.heading}>
                 What Policy Priority Item are You Collecting Data On?
             </Text>
@@ -37,6 +37,8 @@ let Select_Policy_Ind = () => {
             <MultipleSelectList 
                 setSelected={(val) => setSelected(val)} 
                 data={data} 
+                boxStyles={styles.list}
+                dropdownStyles={{backgroundColor: 'white'}}
                 save="value"
                 onSelect={() => alert(selected)} 
                 label="Policy Priority Items"
@@ -45,7 +47,9 @@ let Select_Policy_Ind = () => {
             <TouchableOpacity 
             style={styles.container}
             onPress={() => alert(selected)}>
-                <Text style={styles.button_text}>Start</Text>
+                <View style={styles.format}>
+                <Text style={styles.button_text}>START</Text>
+                </View>
             </TouchableOpacity>
 
 
@@ -60,46 +64,63 @@ const styles=StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
-        padding: 20
+        padding: 20,
+        marginTop: 50
     },
 
     text: {
         fontSize: 22,
         textAlign: 'center',
-        marginTop: 10,
+        marginTop: 40,
         fontFamily: 'Times New Roman',
         marginBottom: 10
     },
 
+    format: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
     container: {
         alignSelf: 'center',
-        width: 150,
+        width: '40%',
         height: 50,
         backgroundColor: '#efca66',
         borderWidth: '1',
         borderColor: 'gray',
-        marginTop: 20
+        marginTop: 20,
+        borderRadius: 10
     },
 
     button_text: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
-        paddingTop: 10,
-        textAlign: 'center',
     },
 
     required: {
         fontSize: 15,
         color: 'gray',
-        marginTop: 20,
+        marginTop: 10,
         marginBottom: 10
     },
 
     select: {
         backgroundColor: 'white',
         borderRadius: 10
-    }
-
-    
+    },
+    background: {
+        flex: 1,
+        backgroundColor: '#afd8c9',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: 100,
+        width: "100%",
+        height: "100%"
+      },
+    list: {
+        backgroundColor: 'white',
+        width: 300
+    }  
 });
 
