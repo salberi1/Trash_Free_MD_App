@@ -22,14 +22,14 @@ let Create_Account = () => {
         }
     };
     return(
-        <View>
+        <View style={styles.background}>
             <Text 
-            style={{fontSize: 24, paddingBottom: 10}}>CREATE ACCOUNT</Text>
+            style={styles.heading}>CREATE ACCOUNT</Text>
             <Text>Choose Username: </Text>
             <TextInput 
                 style={styles.text_box}
                 placeholder="username..."
-                multiline={true}
+                multiline={false}
                 onChangeText={(text) => setUsername(text)}/>
                 
             <Text>Choose Password: </Text>
@@ -50,14 +50,14 @@ let Create_Account = () => {
             <TextInput
                 style={styles.text_box}
                 placeholder="email..."
-                multiline={true}
+                multiline={false}
                 onChangeText={(text) => setEmail(text)}
                 />
             <Text>Enter Phone-Number: </Text>
             <TextInput 
                 style={styles.text_box}
                 placeholder="phone-number..."
-                multiline={true}
+                multiline={false}
                 onChangeText={(text) => setPhoneNumber(text)}
             />
 
@@ -65,7 +65,7 @@ let Create_Account = () => {
             <TextInput 
                 style={styles.text_box}
                 placeholder="first-name..."
-                multiline={true}
+                multiline={false}
                 onChangeText={(text) => setFirstName(text)}
             />
 
@@ -73,12 +73,14 @@ let Create_Account = () => {
             <TextInput 
                 style={styles.text_box}
                 placeholder="last-name..."
-                multiline={true}
+                multiline={false}
                 onChangeText={(text) => setLastName(text)}
             />
 
             <TouchableOpacity style={styles.container} onPress={confirmAccount}>
-                <Text style={styles.text}>Submit</Text>
+                <View style={styles.format}>
+                <Text style={styles.text}>SUBMIT</Text>
+                </View>
             </TouchableOpacity>
         </View>
     );
@@ -95,22 +97,43 @@ const styles = StyleSheet.create({
         height: 30,
         width: 200,
         borderRadius: 8,
-        marginBottom: 10
+        marginBottom: 20
     },
     container: {
+    
         borderWidth: 1,
-        backgroundColor: '#9ab880',
-        width: 100,
-        height: 35,
+        backgroundColor: '#efca66',
+        width: 125,
+        height: 40,
         borderRadius: 8,
         alignSelf: 'center',
-        marginTop: 20
+        marginTop: 20,
+        borderColor: 'gray'
     },
-    text: {
-        textAlign: 'center',
-        justifyContent: 'center',
-        paddingTop: 6
-    }
 
+    format: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1
+    },
+    background: {
+        flex: 1,
+        backgroundColor: '#afd8c9',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingTop: 100,
+        width: "100%",
+        height: "100%"
+      },
+      text: {
+        fontSize: 20,
+        fontWeight: 'bold'
+      },
+
+      heading: {
+        fontSize: 24, 
+        paddingBottom: 10,
+        fontWeight: 'bold'
+      }
 });
 
