@@ -11,7 +11,6 @@ import { heading, background } from "../Features/Design.js"
     { label: 'Individual', value: 'Individual' },
     { label: 'Organization', value: 'Organization' },
     { label: 'Volunteer with organization using app', value: 'Volunteer with organization using app' },
-    { label: 'Volunteer with organization not using app', value: 'Volunteer with organization not using app' },
   ];
   return (   
       <View  style={background}>

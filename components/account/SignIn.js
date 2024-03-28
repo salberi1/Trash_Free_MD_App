@@ -14,7 +14,7 @@ export default function Signin({navigation})
             <Text style = {heading}>Username:</Text>
             <TextInput 
             style = {styles.input}
-            placeholder='enter esername...'
+            placeholder='enter username...'
             onChangeText={(text) => setUsername(text)}
             />
 
@@ -26,7 +26,9 @@ export default function Signin({navigation})
             onChangeText={(text) => setPassword(text)}
             />
             
-            <TouchableOpacity style = {submit_button}>
+            <TouchableOpacity 
+            style = {submit_button}
+            onPress={() => navigation.navigate("Home Page")}>
               <View style={format}>
                 <Text style={submit_button_text}>
                   SUBMIT

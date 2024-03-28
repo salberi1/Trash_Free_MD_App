@@ -2,12 +2,16 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView, TextInput, Alert } from 'react-native';
+import { background, format, submit_button_text } from "../Features/Design.js"
 
+/*Page you're taken to as an organization, allows you to set radius of the location, and allows for you to start/share the 
+cleanup, you can also click the volunteers button to view more data on the volunteers, you can also kick them out
+*/
 let Make_Cleanup_Live_Org = ({navigation}) => {
 
     const volunteers = 20;//placeholder number
     return (
-        <View style={styles.background}>
+        <View style={background}>
             <View style={styles.map}>
                 <Text>map will go here</Text>
             </View>
@@ -15,25 +19,25 @@ let Make_Cleanup_Live_Org = ({navigation}) => {
                 style={styles.volunteer_button} //this button will let you view how many volunteers have joined
                 onPress={() => navigation.navigate("Volunteers Join")}
             >
-                <View style={styles.format}>
-                    <Text style={styles.button_text}>{volunteers} VOLUNTEER(S)</Text>
+                <View style={format}>
+                    <Text style={submit_button_text}>{volunteers} VOLUNTEER(S)</Text>
                 </View>
             </TouchableOpacity>
             <Text>Remember to wait for volunteers before pressing start!</Text>
             <TouchableOpacity 
                 style={styles.buttons} //this button will be linked to acutally starting the cleanup
             >
-                <View style={styles.format}>
+                <View style={format}>
                     
-                    <Text style={styles.button_text}>START</Text>
+                    <Text style={submit_button_text}>START</Text>
                 </View>
             </TouchableOpacity>
 
             <TouchableOpacity 
                 style={styles.buttons} //this button will be linked to a seperate page
             >
-                <View style={styles.format}>
-                    <Text style={styles.button_text}>SHARE</Text>
+                <View style={format}>
+                    <Text style={submit_button_text}>SHARE</Text>
                 </View>
             </TouchableOpacity>
 
@@ -52,28 +56,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 10,
         borderRadius: 10
-
     },
-    format: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-
-    button_text: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    background: {
-        flex: 1,
-        backgroundColor: '#afd8c9',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingTop: 100,
-        width: "100%",
-        height: "100%"
-      },
-
       volunteer_button: {
         backgroundColor: '#9ab880',
         width: '60%',
@@ -91,7 +74,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         backgroundColor: 'white',
         alignItems: 'center',
-        marginBottom: 15
+        marginBottom: 15,
+        marginTop: '15%'
       }
     
 });

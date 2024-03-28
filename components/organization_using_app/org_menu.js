@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list'
 import { background, heading, format, make_cleanup_live_button, yes_no } from "../Features/Design.js"
 // This is the first screen that you are taken to upon selecting the option "organization" from the menu
-
 let Org_menu = ({navigation}) => {
 
   //store the entered information
@@ -50,17 +49,17 @@ let Org_menu = ({navigation}) => {
                 placeholder="Enter organization's email address..."
                 onChangeText = {(text) => (setEmail)}
         />                     
-    <View>
-    <Text style={heading}>Will You (Organization User) Also Be Cleaning Up?</Text>
+      <View> 
+        <Text style={heading}>Will You (Organization User) Also Be Cleaning Up?</Text>
         <View>
-         <View>
+          <View>
             <TouchableOpacity
               style={yes_no}>
                 <View style={format}>
                   <Text>YES</Text>
                 </View>   
             </TouchableOpacity>
-        </View>
+          </View>
         </View>
         <View>
             <TouchableOpacity

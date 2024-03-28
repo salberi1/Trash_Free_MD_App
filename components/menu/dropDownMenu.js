@@ -7,16 +7,13 @@ let MyDropDownPicker = ({items, isOpen, setIsOpen, currentValue, setCurrentValue
     // Perform navigation based on the selected label
     switch (selectedValue) {
       case 'Individual':
-        navigation.navigate('Individual/Volunteer with organization not using app');
+        navigation.navigate('Individual');
         break;
       case 'Organization':
         navigation.navigate('Organization');
         break;
       case 'Volunteer with organization using app':
         navigation.navigate('Volunteer with organization using app');
-        break;
-      case 'Volunteer with organization not using app':
-        navigation.navigate('Individual/Volunteer with organization not using app');
         break;
       default:
         break;
