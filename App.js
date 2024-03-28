@@ -11,24 +11,25 @@ import Signin from './components/account/SignIn.js';
 import Create_Account from './components/account/create_account.js';
 import Make_Cleanup_Live_Org from './components/organization_using_app/make_cleanup_live.js';
 import Volunteers_Join from './components/organization_using_app/volunteers_join.js';
-
+import IndividualAccount from './components/account/individual_account.js';
 
 
 const Stack = createStackNavigator();
 
 export default function App() {
     return (
-      <NavigationContainer>
+      <NavigationContainer independent={true}>
         <Stack.Navigator initialRouteName="Sign In">
-          <Stack.Screen name="Sign In" component={Signin} />
+          <Stack.Screen name="Sign In" component={Signin} options={{ headerShown: false }}/>
           <Stack.Screen name="Create Account" component={Create_Account} />
           <Stack.Screen name="Main Menu" component={MainMenu} />
-          <Stack.Screen name="Individual/Volunteer with organization not using app" component={Individual} />
+          <Stack.Screen name="Individual" component={Individual} />
           <Stack.Screen name="Organization" component={Org_menu} />
           <Stack.Screen name="Volunteer with organization using app" component={V_with_menu} />
           <Stack.Screen name="Policy Priority item selection" component={Select_Policy_Ind} />
           <Stack.Screen name="Make Cleanup Live" component={Make_Cleanup_Live_Org} />
           <Stack.Screen name="Volunteers Join" component={Volunteers_Join} />
+          <Stack.Screen name="Home Page" component={IndividualAccount} options={{ headerShown: false }}/>
           {/* Other screens */}
         </Stack.Navigator>
       </NavigationContainer>
