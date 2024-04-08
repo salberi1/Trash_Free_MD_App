@@ -25,3 +25,22 @@ db.getConnection( (err, connection)=> {
     if (err) throw (err)
     console.log ("DB connected successful: " + connection.threadId)
  })
+
+ const port  = process.env.port
+
+ app.listen(port, ()=> console.log('serverStarted on port ${port}...'))
+
+ app.use(express.json());
+
+ app.post("/userLogin", async (req,res)=>{
+    try{
+        const {username, password} = req.body;
+
+        const result = await userLogin(db,username,password)
+    }
+
+    catch (error){
+        console.error("Error logging in:",error)
+        res.status(500).send("Internal Server error")
+    }
+ });
