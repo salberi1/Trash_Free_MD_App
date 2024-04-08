@@ -2,10 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import { SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
+import { background, submit_button, format, submit_button_text, heading } from "../Features/Design.js"
 
 
-
-let Create_Account = () => {
+let Create_Account = ({navigation}) => {
     const [password, setPassword] = useState('');
     const [confirm_password, set_confirm_password] = useState('');
     const [username, setUsername] = useState('');
@@ -14,17 +14,49 @@ let Create_Account = () => {
     const [firstname, setFirstName] = useState('');
     const [lastname, setLastName] = useState('');
 
-    const confirmAccount = () => {
-        if (password === confirm_password){
-            Alert.alert('Account successfully created');
-        }else{
-            Alert.alert('Error', 'Passwords Do Not Match');
+    const confirmAccount = async () => {
+        try {
+            if (password === confirm_password) {
+                const userData = {
+                    username: username,
+                    password: password,
+                    email: email, 
+                    mobile: phone_number,
+                    first_name: firstname,
+                    last_name: lastname
+                };
+
+                const response = await fetch('http://10.0.0.79:3000/createUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                });
+
+                if (response.ok) {
+                    // User created successfully
+                    Alert.alert('Success', 'Account created successfully');
+                    navigation.navigate("Home Page");
+                } else {
+                    // Error creating user
+                    Alert.alert('Error', 'Failed to create account');
+                }
+            } else {
+                // Passwords do not match
+                Alert.alert('Error', 'Passwords do not match');
+            }
+        } catch (error) {
+            Alert.alert('Error', 'Internal Server Error');
         }
     };
+    
     return(
-        <View style={styles.background}>
+        <View style={background}>
+            <View style={{marginVertical: '10%'}}>
             <Text 
-            style={styles.heading}>CREATE ACCOUNT</Text>
+            style={heading}>CREATE ACCOUNT</Text>
+            </View>
             <Text>Choose Username: </Text>
             <TextInput 
                 style={styles.text_box}
@@ -53,7 +85,7 @@ let Create_Account = () => {
                 multiline={false}
                 onChangeText={(text) => setEmail(text)}
                 />
-            <Text>Enter Phone-Number: </Text>
+            <Text>Enter Phone-Number (optional): </Text>
             <TextInput 
                 style={styles.text_box}
                 placeholder="phone-number..."
@@ -77,9 +109,9 @@ let Create_Account = () => {
                 onChangeText={(text) => setLastName(text)}
             />
 
-            <TouchableOpacity style={styles.container} onPress={confirmAccount}>
-                <View style={styles.format}>
-                <Text style={styles.text}>SUBMIT</Text>
+            <TouchableOpacity style={submit_button} onPress={confirmAccount}>
+                <View style={format}>
+                <Text style={submit_button_text}>SUBMIT</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -99,41 +131,5 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         marginBottom: 20
     },
-    container: {
-    
-        borderWidth: 1,
-        backgroundColor: '#efca66',
-        width: 125,
-        height: 40,
-        borderRadius: 8,
-        alignSelf: 'center',
-        marginTop: 20,
-        borderColor: 'gray'
-    },
-
-    format: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1
-    },
-    background: {
-        flex: 1,
-        backgroundColor: '#afd8c9',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingTop: 100,
-        width: "100%",
-        height: "100%"
-      },
-      text: {
-        fontSize: 20,
-        fontWeight: 'bold'
-      },
-
-      heading: {
-        fontSize: 24, 
-        paddingBottom: 10,
-        fontWeight: 'bold'
-      }
 });
 
