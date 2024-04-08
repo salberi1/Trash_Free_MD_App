@@ -6,6 +6,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 /*This page will allow organizations to set the location and radius for the cleanup*/
+require('dotenv').config();
 
 let Make_Cleanup_Live_Org = ({navigation}) => {
 
@@ -41,7 +42,7 @@ let Make_Cleanup_Live_Org = ({navigation}) => {
                     fetchDetails={true}
                     onPress={(data, details = null) => handleLocationSelect(data, details)}                
                     query={{
-                        key: 'AIzaSyBjOvFTHAV1-ZDMkh0YXzU-mvD32zqUiBs',
+                        key: process.env.MAPS_API_KEY,
                         language: 'en'
                     }}
                     style={{
