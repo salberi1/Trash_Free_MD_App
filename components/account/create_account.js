@@ -5,7 +5,7 @@ import { SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
 import { background, submit_button, format, submit_button_text, heading } from "../Features/Design.js"
 
 
-let Create_Account = () => {
+let Create_Account = ({navigation}) => {
     const [password, setPassword] = useState('');
     const [confirm_password, set_confirm_password] = useState('');
     const [username, setUsername] = useState('');
@@ -14,13 +14,43 @@ let Create_Account = () => {
     const [firstname, setFirstName] = useState('');
     const [lastname, setLastName] = useState('');
 
-    const confirmAccount = () => {
-        if (password === confirm_password){
-            Alert.alert('Account successfully created');
-        }else{
-            Alert.alert('Error', 'Passwords Do Not Match');
+    const confirmAccount = async () => {
+        try {
+            if (password === confirm_password) {
+                const userData = {
+                    username: username,
+                    password: password,
+                    email: email, 
+                    mobile: phone_number,
+                    first_name: firstname,
+                    last_name: lastname
+                };
+
+                const response = await fetch('http://172.20.10.3:3000/createUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                });
+
+                if (response.ok) {
+                    // User created successfully
+                    Alert.alert('Success', 'Account created successfully');
+                    navigation.navigate("Home Page");
+                } else {
+                    // Error creating user
+                    Alert.alert('Error', 'Failed to create account');
+                }
+            } else {
+                // Passwords do not match
+                Alert.alert('Error', 'Passwords do not match');
+            }
+        } catch (error) {
+            Alert.alert('Error', 'Something went wrong. Please try again.');
         }
     };
+    
     return(
         <View style={background}>
             <View style={{marginVertical: '10%'}}>
