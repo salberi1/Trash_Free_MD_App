@@ -1,25 +1,30 @@
 //LOGIN (AUTHENTICATE USER)
-app.post("/login", (req, res)=> {
-    const user = req.body.name
-    const password = req.body.password
+
+
+const bcrypt = require("bcrypt");
+const mysql = require("mysql");
+
+async function userLogin(db, username,password,res) {
+  try{
     db.getConnection ( async (err, connection)=> {
      if (err) throw (err)
-     const sqlSearch = "Select * from userTable where user = ?"
-     const search_query = mysql.format(sqlSearch,[user])
+     const sqlSearch = "SELECT * FROM UserTable WHERE username = ?"
+     const search_query = mysql.format(sqlSearch,[username])
      await connection.query (search_query, async (err, result) => {
       connection.release()
       
       if (err) throw (err)
       if (result.length == 0) {
+        console.log(username)
        console.log("--------> User does not exist")
-       res.sendStatus(404)
+       res.sendStatus(409);
       } 
       else {
          const hashedPassword = result[0].password
          //get the hashedPassword from result
         if (await bcrypt.compare(password, hashedPassword)) {
         console.log("---------> Login Successful")
-        res.send(`${user} is logged in!`)
+        res.send(`${username} is logged in!`)
         } 
         else {
         console.log("---------> Password Incorrect")
@@ -28,4 +33,14 @@ app.post("/login", (req, res)=> {
       }//end of User exists i.e. results.length==0
      }) //end of connection.query()
     }) //end of db.connection()
-    }) //end of app.post()
+    } //end of app.post()
+  catch(err){
+    console.error("Server connection error",err)
+    res.sendStatus(410)
+
+  }
+    
+  }
+  
+    module.exports = {userLogin}; 
+    
