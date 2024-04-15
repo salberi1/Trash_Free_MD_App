@@ -36,7 +36,7 @@ db.getConnection( (err, connection)=> {
     try{
         const {username, password} = req.body;
 
-        const result = await userLogin(db,username,password)
+        const result = await userLogin(db,username,password,res)
     }
 
     catch (error){
