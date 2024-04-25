@@ -9,6 +9,13 @@ import Join_Individual from './bottom_tabs_screens/join_cleanup.js';
 import Start_Own_Cleanup from './bottom_tabs_screens/start_cleanup/start_own_cleanup.js';
 import Map_Count from './bottom_tabs_screens/start_cleanup/map_count.js';
 
+
+
+
+//this is going to hold the tabs of the home page for the first tier of accounts
+//the tabs are at the bottom of the screen
+
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -24,9 +31,11 @@ function StartCleanupStack() {
 function MainTabs() {
     return (
         <Tab.Navigator screenOptions={{ headerShown: false }}>
+
             <Tab.Screen name="Join Cleanup" component={Join_Individual} />
             <Tab.Screen name="History" component={History} />
             <Tab.Screen name="Start Cleanup" component={StartCleanupStack} />
+
         </Tab.Navigator>
     );
 }
