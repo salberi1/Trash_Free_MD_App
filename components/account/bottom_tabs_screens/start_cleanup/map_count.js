@@ -1,19 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import React, { useState, useRef } from 'react';
-import { background } from '../../../Features/Design';
+import { background, submit_button, format, submit_button_text } from '../../../Features/Design';
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { colors } from '../../../Features/colors';
-import StopwatchTimer, {
-    StopwatchTimerMethods,
-  } from 'react-native-animated-stopwatch-timer';
-import { color } from '../../../Features/colors.js';
+import StopwatchTimer, { StopwatchTimerMethods } from 'react-native-animated-stopwatch-timer';
 
 
 
 
-export default function Map_Count(){
+
+export default function Map_Count({navigation}){
 
     const [region, setRegion] = useState({
         latitude: 37.78825,
@@ -92,7 +90,7 @@ export default function Map_Count(){
                     />
                 </MapView>
             </View>
-            <Text style={{marginBottom: '10%'}}>Policy Priority Items: </Text>
+            <Text style={{marginBottom: '10%'}}>Items: </Text>
 
             <View style={styles.stopwatchContainer}>
                 <StopwatchTimer 
@@ -109,7 +107,17 @@ export default function Map_Count(){
                         <Text>Reset</Text>
                     </TouchableOpacity>
                 </View>
+
+                <TouchableOpacity style={[submit_button, {height: 50, width: 100}]}
+                    onPress={() => navigation.navigate("Submit Cleanup")}> 
+                    <View style={format}>
+                        <Text style={submit_button_text}>NEXT</Text>
+                    </View>
+                </TouchableOpacity>
+
             </View>
+
+            
     </View>
     );
 }
@@ -119,7 +127,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: '50%', 
         marginTop: '1.1%', 
-        marginBottom: '10%', 
+        marginBottom: '2%', 
         width: '89.7%',
         borderRadius: 5,
         borderWidth: 1,
@@ -129,7 +137,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     stopwatchContainer: {
-        marginBottom: '2%',
+        marginBottom: '10%',
         height: '30%',
         width: '100%',
         alignItems: 'center'

@@ -2,11 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
-import { background, heading, format, make_cleanup_live_button, yes_no, submit_button, submit_button_text } from "../../../Features/Design.js";
+import { background, heading, format, submit_button, submit_button_text } from "../../../Features/Design.js";
 
 
 
-    export default function Start_Own_Cleanup({navigation}){
+    export default function Common_Items({navigation}){
         const [addres, setAddress] = React.useState([]);
         const [time, setTime ] = useState('');
         const [selected, setSelected ] = React.useState([]);
@@ -20,22 +20,21 @@ import { background, heading, format, make_cleanup_live_button, yes_no, submit_b
 
         return(
         <View style= { background }>
-            <Text style={ heading }> Start Your Own Cleanup: </Text>
+            <Text style={ heading }> Common Items: </Text>
             <View style={format}>
-            <Text style={[ heading, {alignSelf: 'center', marginBottom: '5%'}]}> Policy Priority Items</Text>    
+            <Text style={[ heading, {alignSelf: 'center', marginBottom: '5%'}]}> Common Items</Text>    
             <MultipleSelectList 
                 setSelected={(val) => setSelected(val)} 
                 data={data} 
                 boxStyles={styles.list}
                 dropdownStyles={{backgroundColor: 'white'}}
                 save="value" 
-                label="Policy Priority Items"
+                label="Common Items"
             />
             </View>
 
-            <TouchableOpacity 
-                style={[submit_button, {marginBottom: '20%'}]}
-                onPress={() => navigation.navigate("Common Items")}>
+            <TouchableOpacity style={[submit_button, {marginBottom: '20%'}]}
+                onPress={() => navigation.navigate("Map Count")}>
                 <View style={format}>
                 <Text style={submit_button_text}>Next</Text>
                 </View>
