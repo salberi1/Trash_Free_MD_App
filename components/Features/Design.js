@@ -66,3 +66,15 @@ export const make_cleanup_live_button = {
     borderRadius: 10   
 }
 
+export const text_box =  {
+    borderWidth: 1,
+    backgroundColor: 'white',
+    borderColor: 'gray',
+    padding: 5,
+    textAlign: 'left',
+    height: 30,
+    width: 200,
+    borderRadius: 8,
+    marginBottom: 20
+}
+

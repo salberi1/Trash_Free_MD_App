@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
-import { SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, SafeAreaView, TextInput, TouchableOpacity  } from 'react-native';
 import { background, submit_button, format, submit_button_text, heading } from "../Features/Design.js"
 
 

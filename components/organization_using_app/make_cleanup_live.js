@@ -2,11 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 import React, { useState } from 'react';
 import { background, format, submit_button_text } from "../Features/Design.js";
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { colors } from "../Features/colors.js";
 
 /*This page will allow organizations to set the location and radius for the cleanup*/
-require('dotenv').config();
+
 
 let Make_Cleanup_Live_Org = ({navigation}) => {
 
@@ -18,7 +19,6 @@ let Make_Cleanup_Live_Org = ({navigation}) => {
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
     });
-
     const handleLocationSelect = (data, details) => {
         
         const {geometry} = details;
@@ -40,9 +40,11 @@ let Make_Cleanup_Live_Org = ({navigation}) => {
                 <GooglePlacesAutocomplete
                     placeholder='Search'
                     fetchDetails={true}
-                    onPress={(data, details = null) => handleLocationSelect(data, details)}                
+                    onPress={(data, details = null) => {
+                        handleLocationSelect(data, details);
+                        }}         
                     query={{
-                        key: process.env.MAPS_API_KEY,
+                        key: 'AIzaSyBjOvFTHAV1-ZDMkh0YXzU-mvD32zqUiBs',
                         language: 'en'
                     }}
                     style={{
@@ -60,7 +62,19 @@ let Make_Cleanup_Live_Org = ({navigation}) => {
                     provider={PROVIDER_GOOGLE}
                     initialRegion={region}
                     region={region}
-                />
+                >
+                    <Marker
+                        coordinate={{latitude: region.latitude, longitude: region.longitude}}
+                        title={"Marker Title"}
+                        description={"Marker Description"}
+                    />  
+                    <Circle
+                        center={{latitude: region.latitude, longitude: region.longitude}}
+                        radius={1000}
+                        fillColor={`${colors.colors.City_Blue}80`}
+
+                    />
+                </MapView>
             </View>
 
             <TouchableOpacity 

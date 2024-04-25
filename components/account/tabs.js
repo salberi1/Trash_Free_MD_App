@@ -9,6 +9,7 @@ import Account from './bottom_tabs_screens/accounts';
 import Settings from './bottom_tabs_screens/settings';
 import History from './bottom_tabs_screens/history.js';
 import Join_Individual from './bottom_tabs_screens/join_cleanup.js';
+import Start_Own_Cleanup from './bottom_tabs_screens/start_own_cleanup.js';
 
 
 //this is going to hold the tabs of the home page for the first tier of accounts
@@ -21,6 +22,7 @@ export default function Tabs(){
         <Tab.Navigator screenOptions={{ headerShown: false }}>
             <Tab.Screen name="Join Cleanup" component={ Join_Individual }/>
             <Tab.Screen name="History" component= { History }/>
+            <Tab.Screen name="Start Cleanup" component= { Start_Own_Cleanup} />
         </Tab.Navigator>
     );
     
