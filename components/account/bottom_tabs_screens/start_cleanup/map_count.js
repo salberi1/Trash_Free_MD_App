@@ -34,6 +34,7 @@ export default function Map_Count({navigation}){
 
     const stopwatchTimerRef = useRef(null);
     const [isRunning, setIsRunning] = useState(false);
+    const [finalTime, setFinalTime] = useState(0);
 
     function handlePlayPause() {
         if (isRunning) {
@@ -48,6 +49,10 @@ export default function Map_Count({navigation}){
         stopwatchTimerRef.current?.reset();
         setIsRunning(false);
     }  
+
+    function handleTimeElapsed(time) {
+        setFinalTime(time);
+    }
 
     return(
     <View style={ background }>
@@ -98,6 +103,7 @@ export default function Map_Count({navigation}){
                     containerStyle={{ backgroundColor: 'white', height: '30%', width: '60%', borderRadius: 10, justifyContent: 'center', 
                     alignItems: 'center'}}
                     digitStyle={{fontSize: '20', alignSelf: 'center'}}
+                    onTimeElapsed={handleTimeElapsed}
                 />
                 <View style={styles.stopwatchControls}>
                     <TouchableOpacity style={styles.button} onPress={handlePlayPause}>
