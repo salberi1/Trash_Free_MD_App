@@ -1,11 +1,5 @@
-const express = require("express");
-const { connection } = require("mongoose");
-const app = express();
-
-const mysql = require ("mysql")
-
-require("dotenv").config()
 const {userLogin} = require('./AccountLogin.js');
+const {cleanupLocation} = require('./cleanup_Location_Handler.js')
 
 const DB_HOST = process.env.DB_HOST;
 const DB_USER = process.env.DB_USER
@@ -33,11 +27,36 @@ db.getConnection( (err, connection)=> {
 
  app.use(express.json());
 
+ app.post("/createUser", async (req, res) => {
+    try {
+      const { username, password, email, mobile, first_name, last_name } = req.body;
+  
+      const result = await createUser(db, username, password, email, mobile, first_name, last_name, res);
+
+    } catch (error) {
+      console.error("Error creating user:", error);
+      res.status(500).send("Internal Server Error (Backend)");
+    }
+  });
+ 
  app.post("/userLogin", async (req,res)=>{
     try{
         const {username, password} = req.body;
 
         const result = await userLogin(db,username,password,res)
+    }
+
+    catch (error){
+        console.error("Error logging in:",error)
+        res.status(500).send("Internal Server error")
+    }
+ });
+
+ app.post("/cleanupLocation", async (req,res)=>{
+    try{
+        const {date, time,location} = req.body;
+
+        const result = await cleanupLocation(db,date,time,location,res)
     }
 
     catch (error){
