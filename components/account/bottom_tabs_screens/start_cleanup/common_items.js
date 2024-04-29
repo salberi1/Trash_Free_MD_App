@@ -36,7 +36,7 @@ import { background, heading, format, submit_button, submit_button_text } from "
             <TouchableOpacity style={[submit_button, {marginBottom: '20%'}]}
                 onPress={() => navigation.navigate("Map Count")}>
                 <View style={format}>
-                <Text style={submit_button_text}>Next</Text>
+                <Text style={submit_button_text}>NEXT</Text>
                 </View>
             </TouchableOpacity>
 

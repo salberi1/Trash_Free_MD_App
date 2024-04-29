@@ -37,7 +37,7 @@ import { background, heading, format, make_cleanup_live_button, yes_no, submit_b
                 style={[submit_button, {marginBottom: '20%'}]}
                 onPress={() => navigation.navigate("Common Items")}>
                 <View style={format}>
-                <Text style={submit_button_text}>Next</Text>
+                <Text style={submit_button_text}>NEXT</Text>
                 </View>
             </TouchableOpacity>
 

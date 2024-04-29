@@ -1,15 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, ScrollView } from 'react-native';
 import React, { useState, useRef } from 'react';
 import { background, submit_button, format, submit_button_text } from '../../../Features/Design';
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import Slider from '@react-native-community/slider';
 import { colors } from '../../../Features/colors';
 import StopwatchTimer, { StopwatchTimerMethods } from 'react-native-animated-stopwatch-timer';
-
-
-
-
 
 export default function Map_Count({navigation}){
 
@@ -31,7 +28,7 @@ export default function Map_Count({navigation}){
             longitudeDelta: 0.05,
         });
     };
-
+    const [radius, setRadius] = useState(1000)
     const stopwatchTimerRef = useRef(null);
     const [isRunning, setIsRunning] = useState(false);
     const [finalTime, setFinalTime] = useState(0);
@@ -89,12 +86,21 @@ export default function Map_Count({navigation}){
                     />  
                     <Circle
                         center={{latitude: region.latitude, longitude: region.longitude}}
-                        radius={1000}
+                        radius={radius}
                         fillColor={`${colors.colors.City_Blue}80`}
 
                     />
                 </MapView>
             </View>
+            <Slider
+                style={{width: 200, height: 40}}
+                minimumValue={0}
+                maximumValue={5000}
+                minimumTrackTintColor="#FFFFFF"
+                maximumTrackTintColor="#000000"
+                value={radius} // Current radius value
+                onValueChange={(value) => setRadius(value)}
+            />
             <Text style={{marginBottom: '10%'}}>Items: </Text>
 
             <View style={styles.stopwatchContainer}>
@@ -129,6 +135,12 @@ export default function Map_Count({navigation}){
 }
 
 const styles = StyleSheet.create({
+
+    scrollView: {
+        width: '80%',
+        height: '100%'
+  
+    },
     mapContainer: {
         flex: 1,
         height: '50%', 
