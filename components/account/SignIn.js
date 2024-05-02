@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet,TextInput,Pressable, TouchableOpacity, SafeAreaView, DevSettings } from 'react-native'
+import { View, Text, StyleSheet,TextInput,Pressable, TouchableOpacity, SafeAreaView, DevSettings, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { background, format, submit_button, heading, submit_button_text } from "../Features/Design.js"
 
@@ -6,6 +6,35 @@ export default function Signin({navigation})
 {
     const [username, setUsername] = useState('username');
     const [password,setPassword] = useState('password');
+
+    const confirmLogin = async ()=> {
+      try {
+        const userData = {
+          username: username,
+          password: password,
+         };
+    
+         const response = await fetch('http://172.20.10.3:3000/userLogin',{
+            method: 'POST',
+            headers:{
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+         });
+    
+         if(response.ok){
+          //user signed in successfully
+          Alert.alert('Signed in Successfully');
+          navigation.navigate("Home Page");
+         }
+    
+         else{
+          Alert.alert("Username or password are incorrect")
+         }
+      } catch (error) {
+          Alert.alert('Error', 'Something went wrong. Please try again.');
+      }
+  };
 
     return(
         <View style = {background}>
@@ -28,7 +57,7 @@ export default function Signin({navigation})
             
             <TouchableOpacity 
             style = {submit_button}
-            onPress={() => navigation.navigate("Home Page")}>
+            onPress={confirmLogin}>
               <View style={format}>
                 <Text style={submit_button_text}>
                   SUBMIT
