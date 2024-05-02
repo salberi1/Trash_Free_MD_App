@@ -12,6 +12,10 @@ import Create_Account from './components/account/create_account.js';
 import Make_Cleanup_Live_Org from './components/organization_using_app/make_cleanup_live.js';
 import Volunteers_Join from './components/organization_using_app/volunteers_join.js';
 import IndividualAccount from './components/account/individual_account.js';
+import Create_Account_Names from './components/create_account/name.js';
+import Create_Account_Contact from './components/create_account/contact.js';
+import Create_Account_Username from './components/create_account/username.js';
+import Create_Account_Password from './components/create_account/password.js';
 
 
 const Stack = createStackNavigator();
@@ -21,7 +25,10 @@ export default function App() {
       <NavigationContainer independent={true}>
         <Stack.Navigator initialRouteName="Sign In">
           <Stack.Screen name="Sign In" component={Signin} options={{ headerShown: false }}/>
-          <Stack.Screen name="Create Account" component={Create_Account} />
+          <Stack.Screen name="Create Account" component={Create_Account_Names} />
+          <Stack.Screen name="Contact Information" component={Create_Account_Contact} />
+          <Stack.Screen name="Username" component={Create_Account_Username} />
+          <Stack.Screen name="Password" component={Create_Account_Password} />
           <Stack.Screen name="Main Menu" component={MainMenu} />
           <Stack.Screen name="Individual" component={Individual} />
           <Stack.Screen name="Organization" component={Org_menu} />

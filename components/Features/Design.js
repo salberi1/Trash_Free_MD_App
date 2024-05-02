@@ -22,6 +22,18 @@ export const submit_button = {
     height: '6%',
 }
 
+export const calendar_button = {
+    width: '35%',
+    backgroundColor: colors.colors.Moss_Green,
+    color: colors.colors.Moss_Green,
+    marginTop: 40,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 10,
+    height: '6%',
+}
+
 export const format = {
     flex: 1,
     alignItems: 'center',
@@ -64,5 +76,30 @@ export const make_cleanup_live_button = {
     marginTop: 20,
     backgroundColor: colors.colors.Sunflower, 
     borderRadius: 10   
+}
+
+export const text_box =  {
+    borderWidth: 1,
+    backgroundColor: 'white',
+    borderColor: 'gray',
+    padding: 5,
+    textAlign: 'left',
+    height: 30,
+    width: 200,
+    borderRadius: 8,
+    marginBottom: 20
+}
+
+
+export const item_text_box =  {
+    borderWidth: 1,
+    backgroundColor: 'white',
+    borderColor: 'gray',
+    padding: 5,
+    textAlign: 'left',
+    height: 30,
+    width: 100,
+    borderRadius: 8,
+    marginBottom: 20
 }
 

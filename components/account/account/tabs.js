@@ -9,7 +9,6 @@ import Join_Individual from './bottom_tabs_screens/join_cleanup.js';
 import Start_Own_Cleanup from './bottom_tabs_screens/start_cleanup/start_own_cleanup.js';
 import Map_Count from './bottom_tabs_screens/start_cleanup/map_count.js';
 import Common_Items from './bottom_tabs_screens/start_cleanup/common_items';
-import Submit_Cleanup from './bottom_tabs_screens/start_cleanup/submit_cleanup';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -20,7 +19,6 @@ function StartCleanupStack() {
             <Stack.Screen name="Start Own Cleanup" component={Start_Own_Cleanup} />
             <Stack.Screen name="Common Items" component={Common_Items} />
             <Stack.Screen name="Map Count" component={Map_Count} />
-            <Stack.Screen name="Submit Cleanup" component={Submit_Cleanup}/>
         </Stack.Navigator>
     );
 }

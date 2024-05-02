@@ -1,17 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
-import React, { useState } from 'react';
-import { background, format, submit_button_text } from "../Features/Design.js";
+import React, { useState, useRef } from 'react';
+import { background } from '../../../Features/Design';
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { colors } from "../Features/colors.js";
+import { colors } from '../../../Features/colors';
+import StopwatchTimer, {
+    StopwatchTimerMethods,
+  } from 'react-native-animated-stopwatch-timer';
+import { color } from '../../../Features/colors.js';
 
-/*This page will allow organizations to set the location and radius for the cleanup*/
 
 
-let Make_Cleanup_Live_Org = ({navigation}) => {
 
-    const volunteers = 20; //placeholder number
+export default function Map_Count(){
 
     const [region, setRegion] = useState({
         latitude: 37.78825,
@@ -30,13 +32,28 @@ let Make_Cleanup_Live_Org = ({navigation}) => {
             latitudeDelta: 0.05,
             longitudeDelta: 0.05,
         });
-
-
     };
-    return (
-        <View style={background}>
 
-            <View style={{ zIndex: 999, top: '1.3%', width: '89.2%', alignSelf: 'center', position: 'absolute', backgroundColor: 'white', borderRadius: 10 }}>
+    const stopwatchTimerRef = useRef(null);
+    const [isRunning, setIsRunning] = useState(false);
+
+    function handlePlayPause() {
+        if (isRunning) {
+            stopwatchTimerRef.current?.pause();
+        } else {
+            stopwatchTimerRef.current?.play();
+        }
+        setIsRunning(!isRunning);
+    }
+
+    function handleReset() {
+        stopwatchTimerRef.current?.reset();
+        setIsRunning(false);
+    }  
+
+    return(
+    <View style={ background }>
+         <View style={{ zIndex: 999, top: '1.5%', width: '89.2%', alignSelf: 'center', position: 'absolute', backgroundColor: 'white', borderRadius: 10 }}>
                 <GooglePlacesAutocomplete
                     placeholder='Search'
                     fetchDetails={true}
@@ -56,7 +73,6 @@ let Make_Cleanup_Live_Org = ({navigation}) => {
                     listStyle={{flex: 1, backgroundColor: 'white'}}
                 />   
             </View>
-
             <View style={styles.mapContainer}>
                 <MapView style={styles.map} 
                     provider={PROVIDER_GOOGLE}
@@ -76,65 +92,34 @@ let Make_Cleanup_Live_Org = ({navigation}) => {
                     />
                 </MapView>
             </View>
+            <Text style={{marginBottom: '10%'}}>Policy Priority Items: </Text>
 
-            <TouchableOpacity 
-                style={[styles.buttons, styles.volunteer_button]}
-                onPress={() => navigation.navigate("Volunteers Join")}
-            >
-                <View style={format}>
-                    <Text style={submit_button_text}>{volunteers} VOLUNTEER(S)</Text>
+            <View style={styles.stopwatchContainer}>
+                <StopwatchTimer 
+                    ref={stopwatchTimerRef} 
+                    containerStyle={{ backgroundColor: 'white', height: '30%', width: '60%', borderRadius: 10, justifyContent: 'center', 
+                    alignItems: 'center'}}
+                    digitStyle={{fontSize: '20', alignSelf: 'center'}}
+                />
+                <View style={styles.stopwatchControls}>
+                    <TouchableOpacity style={styles.button} onPress={handlePlayPause}>
+                        <Text>{isRunning ? 'Pause Cleanup' : 'Start Cleanup'}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={handleReset}>
+                        <Text>Reset</Text>
+                    </TouchableOpacity>
                 </View>
-            </TouchableOpacity>
-            
-
-            
-            <TouchableOpacity 
-                style={styles.buttons}
-            >
-                <View style={format}>
-                    <Text style={submit_button_text}>START</Text>
-                </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-                style={styles.buttons}
-            >
-                <View style={format}>
-                    <Text style={submit_button_text}>SHARE</Text>
-                </View>
-            </TouchableOpacity>
-
-        </View>
+            </View>
+    </View>
     );
-};
-
-export default Make_Cleanup_Live_Org;
+}
 
 const styles = StyleSheet.create({
-    buttons: {
-        height: 35,
-        width: '40%',
-        borderWidth: 1,
-        backgroundColor: '#efca66',
-        alignSelf: 'center',
-        marginTop: 0,
-        marginBottom: '10%',
-        borderRadius: 10
-    },
-    volunteer_button: {
-        backgroundColor: '#9ab880',
-        width: '60%',
-        height: 40,
-        borderWidth: 1,
-        alignSelf: 'center',
-        borderRadius: 10,
-        marginBottom: '5%',
-    },
     mapContainer: {
         flex: 1,
         height: '50%', 
         marginTop: '1.1%', 
-        marginBottom: '20%', 
+        marginBottom: '10%', 
         width: '89.7%',
         borderRadius: 5,
         borderWidth: 1,
@@ -142,5 +127,23 @@ const styles = StyleSheet.create({
     },
     map: {
         flex: 1
-    }
+    },
+    stopwatchContainer: {
+        marginBottom: '2%',
+        height: '30%',
+        width: '100%',
+        alignItems: 'center'
+    },
+    stopwatchControls: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    button: {
+        marginHorizontal: 10,
+        padding: '5%',
+        backgroundColor: colors.colors.Moss_Green,
+        borderRadius: 5,
+    },
 });
