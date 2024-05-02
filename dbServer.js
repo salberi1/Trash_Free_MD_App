@@ -1,6 +1,11 @@
 const {userLogin} = require('./AccountLogin.js');
 const {cleanupLocation} = require('./cleanup_Location_Handler.js')
 
+const express = require("express")
+const app = express()
+const mysql = require("mysql")
+require("dotenv").config()
+
 const DB_HOST = process.env.DB_HOST;
 const DB_USER = process.env.DB_USER
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -54,9 +59,9 @@ db.getConnection( (err, connection)=> {
 
  app.post("/cleanupLocation", async (req,res)=>{
     try{
-        const {date, time,location} = req.body;
+        const {user_id,date, time,location} = req.body;
 
-        const result = await cleanupLocation(db,date,time,location,res)
+        const result = await cleanupLocation(db,user_id,date,time,location,res)
     }
 
     catch (error){
