@@ -111,4 +111,3 @@ export const history_heading = {
     fontWeight: 'bold',
     textDecorationLine: 'underline'
 }
-
