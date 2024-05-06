@@ -1,13 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
-import React, { useState } from 'react';
-import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
-import { background, heading, format, make_cleanup_live_button, yes_no } from "../../Features/Design.js";
-
+import React, { useState, useEffect } from 'react';
+import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list'
+import { background, heading, format, make_cleanup_live_button, yes_no } from "../../Features/Design.js"
+import fetchProtectedData from './../getData.js'; // Import the function to fetch user data
 
 
 export default function Join_Individual(){
     const [selection, setSelected] = useState('');
+    const [firstName, setFirstName] = useState(''); // State to hold the user's first name
+
+    useEffect(() => {
+        // Fetch user data when component mounts
+        const fetchUser = async () => {
+            try {
+                const userData = await fetchProtectedData(); // Call the function to fetch user data
+                setFirstName(userData.user.firstName); // Set the user's first name in state
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUser();
+    }, []); // Empty dependency array ensures the effect runs only once when the component mounts
+
+
     const data = [
         {key:'1', value:'Location Option'},
         {key:'2', value:'Location Option 2'},
@@ -19,7 +36,7 @@ export default function Join_Individual(){
       ]
     return(
         <View style={background}>
-            <Text style={heading}>Welcome, !</Text>
+            <Text style={heading}>Welcome, {firstName}!</Text>
 
             <View style={{marginBottom: '5%'}}>
                 <Text style={heading}>Select Your Location</Text>

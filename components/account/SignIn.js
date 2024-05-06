@@ -1,20 +1,30 @@
 import { View, Text, StyleSheet,TextInput,Pressable, TouchableOpacity, SafeAreaView, DevSettings, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { background, format, submit_button, heading, submit_button_text } from "../Features/Design.js"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Signin({navigation})
 {
     const [username, setUsername] = useState('username');
     const [password,setPassword] = useState('password');
 
+    const storeToken = async (token) => {
+      try {
+          await AsyncStorage.setItem('token', token);
+      } catch (error) {
+          console.error('Error storing token:', error);
+      }
+  };
+
     const confirmLogin = async ()=> {
       try {
+
         const userData = {
           username: username,
           password: password,
          };
     
-         const response = await fetch('http://172.20.10.3:3000/userLogin',{
+         const response = await fetch('http://10.0.0.79:3000/userLogin',{
             method: 'POST',
             headers:{
               'Content-Type': 'application/json',
@@ -24,6 +34,8 @@ export default function Signin({navigation})
     
          if(response.ok){
           //user signed in successfully
+          const data = await response.json();
+          await storeToken(data.token); // Store the token received from the server
           Alert.alert('Signed in Successfully');
           navigation.navigate("Home Page");
          }
