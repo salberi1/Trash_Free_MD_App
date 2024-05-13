@@ -1,56 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Modal } from 'react-native';
 import { background, heading, format, submit_button, submit_button_text, history_heading } from "../../Features/Design.js"
 import { colors } from "../../Features/colors.js"
 
-/* 
-    This will hold the history of an individual's cleanup. It will have the date of the cleanup and when you press on the 
-    date a popup will appear with the cleanups stats
-*/ 
-
 function History() {
-
     const [selectedCleanup, setSelectedCleanup] = useState(null);
-    const cleanups = [
-        {date: "1 / 2 / 3", 
-        location: "Salisbury, MD", 
-        duration: "2 hours", 
-        organization: "none",
-        policy_priority_items: [
-            {item: "Bottle", number: 2},
-            {item: "Styrofoam", number: 1}
-        ],
-        common_items: [
-            { item: "item 1", number: 6},
-            { item: "item 2", number : 4}
-        ]},
+    const [cleanups, setCleanups] = useState([]);
 
-        {date: "3 / 4 / 5", 
-        location: "Casper High", 
-        duration: "80 years", 
-        organization: "none",
-        policy_priority_items: [
-            {item: "whatever", number: 2},
-        ],
-        common_items: [
-            { item: "item 1", number: 6},
-            { item: "item 2", number : 4},
-            { item: "item 3", number: 11}
-        ]},
+    useEffect(() => {
+        // Fetch cleanups when component mounts
+        fetchCleanups();
+    }, []);
 
-        {date: "5 / 3 / 2024", 
-        location: "TETC", 
-        duration: "IDK", 
-        organization: "none",
-        policy_priority_items: [
-            {item: "Bottle", number: 2},
-            {item: "Styrofoam", number: 1},
-            {item: "example", number: 5}
-        ],
-        common_items: [
-            { item: "item 1", number: 6},
-        ]}
-    ];
+    const fetchCleanups = async () => {
+        try {
+            const response = await fetch(`${process.env.API_URL}/getCleanupInfo/20`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+                
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setCleanups(data);
+            } else {
+                throw new Error('Error fetching cleanup history');
+            }
+        } catch (error) {
+            console.error('Error fetching cleanups:', error);
+        }
+    };
 
     const handleCleanupSelection = (cleanup) => {
         setSelectedCleanup(cleanup);
@@ -58,49 +38,51 @@ function History() {
 
     const cleanup_info = () => {
         return cleanups.map((cleanup, index) => (
-            <TouchableOpacity 
-                key={index} 
-                style={[styles.cleanups]} 
+            <TouchableOpacity
+                key={index}
+                style={[styles.cleanups]}
                 onPress={() => handleCleanupSelection(cleanup)}
-            > 
+            >
+                <Text>Date: {cleanup[0]}</Text>
                 <Text>{cleanup.date}</Text>
             </TouchableOpacity>
         ));
     }
-    
 
     return (
         <View style={background}>
-
-                <View style={styles.box}>
-                    <ScrollView contentContainerStyle={styles.scrollContainer}>
-                        {cleanup_info()}
-                    </ScrollView>
-                </View>
-                <Modal
+            <View style={styles.box}>
+                <ScrollView contentContainerStyle={styles.scrollContainer}>
+                    {cleanup_info()}
+                </ScrollView>
+            </View>
+            <Modal
                 visible={selectedCleanup !== null}
                 animationType="slide"
-                >
+            >
                 <View style={styles.modalContainer}>
-                    <Text style={ history_heading }>Date</Text>
-                    <Text style={ styles.text }>{selectedCleanup?.date}</Text>
-                    <Text style={ history_heading }>Location</Text>
-                    <Text style={ styles.text }>{selectedCleanup?.location}</Text>
-                    <Text style={ history_heading }>Duration</Text>
-                    <Text style={ styles.text }>{selectedCleanup?.duration}</Text>
-                    <Text style={ history_heading }>Policy Priority Items</Text>
-                    {selectedCleanup?.policy_priority_items.map((item, index) => (
-                        <Text key={index} style={ styles.text }> {item.item}: {item.number}</Text>
-                    ))}
-                    <Text style={ history_heading }>Common Items</Text>
-                    {selectedCleanup?.common_items.map((item, index) => (
-                        <Text key={index} style={ styles.text }> {item.item}: {item.number}</Text>
-                    ))}
+        {selectedCleanup && (
+            <>
+                <Text style={history_heading}>Date</Text>
+                <Text style={styles.text}>{selectedCleanup[0]}</Text>
+                <Text style={history_heading}>Location</Text>
+                <Text style={styles.text}>{selectedCleanup[1]}</Text>
+                <Text style={history_heading}>Duration</Text>
+                <Text style={styles.text}>{selectedCleanup[2]}</Text>
+                <Text style={history_heading}>Common Items</Text>
+                <Text style={styles.text}>{selectedCleanup[3]}</Text>
+                <Text style={history_heading}>Priority Items</Text>
+                <Text style={styles.text}>{selectedCleanup[4]}</Text>
+                <Text style={history_heading}>Total Items</Text>
+                <Text style={styles.text}>{selectedCleanup[5]}</Text>
+                {/* Add other cleanup details as needed */}
+            </>
+        )}
                     <TouchableOpacity
-                        style={[submit_button, {alignSelf: 'center'}]} 
+                        style={[submit_button, { alignSelf: 'center' }]}
                         onPress={() => setSelectedCleanup(null)}>
                         <View style={format}>
-                            <Text style={ submit_button_text }>Close</Text>
+                            <Text style={submit_button_text}>Close</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -114,25 +96,25 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        
+
     },
     box: {
         backgroundColor: 'white',
         width: '80%',
-        height: '70%', 
+        height: '70%',
         borderWidth: 1,
         borderRadius: 10,
-        marginTop: '20%', 
+        marginTop: '20%',
     },
     cleanups: {
         backgroundColor: colors.colors.Moss_Green,
         height: '10%',
         width: '100%',
-        marginBottom: 10, 
-        justifyContent: 'center', 
-        alignItems: 'center', 
+        marginBottom: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
         borderRadius: 5,
-        
+
     },
     modalContainer: {
         flex: 1,
