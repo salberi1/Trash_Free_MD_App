@@ -8,7 +8,7 @@ import Slider from '@react-native-community/slider';
 import { colors } from '../../../Features/colors';
 import StopwatchTimer, { StopwatchTimerMethods } from 'react-native-animated-stopwatch-timer';
 
-export default function Map_Count({navigation}){
+export default function Map_Count({navigation, route}){
 
     const [region, setRegion] = useState({
         latitude: 37.78825,
@@ -16,8 +16,13 @@ export default function Map_Count({navigation}){
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
     });
+
+    const [selectedDescription, setSelectedDescription] = useState(""); // State to store the selected location description
+
     const handleLocationSelect = (data, details) => {
         
+        const { formatted_address } = details; // Extract description from details
+
         const {geometry} = details;
         const {location} = geometry;
 
@@ -27,6 +32,10 @@ export default function Map_Count({navigation}){
             latitudeDelta: 0.05,
             longitudeDelta: 0.05,
         });
+
+        // Store the description in selectedDescription state
+        setSelectedDescription(formatted_address);
+
     };
     const [radius, setRadius] = useState(1000)
     const stopwatchTimerRef = useRef(null);
@@ -39,6 +48,7 @@ export default function Map_Count({navigation}){
         } else {
             stopwatchTimerRef.current?.play();
         }
+    
         setIsRunning(!isRunning);
     }
 
@@ -49,6 +59,7 @@ export default function Map_Count({navigation}){
 
     function handleTimeElapsed(time) {
         setFinalTime(time);
+        console.log(finalTime);
     }
 
     return(
@@ -75,7 +86,7 @@ export default function Map_Count({navigation}){
             </View>
             <View style={styles.mapContainer}>
                 <MapView style={styles.map} 
-                    provider={PROVIDER_GOOGLE}
+                    //provider={PROVIDER_GOOGLE}
                     initialRegion={region}
                     region={region}
                 >
@@ -121,7 +132,7 @@ export default function Map_Count({navigation}){
                 </View>
 
                 <TouchableOpacity style={[submit_button, {height: 50, width: 100}]}
-                    onPress={() => navigation.navigate("Submit Cleanup")}> 
+                    onPress={() => navigation.navigate("Submit Cleanup", {cleanupInfo: route.params.cleanupInfo, location: selectedDescription, duration: stopwatchTimerRef.current?.getSnapshot()})}> 
                     <View style={format}>
                         <Text style={submit_button_text}>NEXT</Text>
                     </View>

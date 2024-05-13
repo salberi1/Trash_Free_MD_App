@@ -1,22 +1,67 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
 import { background, heading, format, submit_button, submit_button_text } from "../../../Features/Design.js";
 
 
-
-    export default function Common_Items({navigation}){
+    export default function Common_Items({navigation, route }){
         const [addres, setAddress] = React.useState([]);
         const [time, setTime ] = useState('');
         const [selected, setSelected ] = React.useState([]);
-        const data = [
-            {key:'1', value:'Plastic Grocery Bags'},
-            {key:'2', value:'Plastic Bottles'},
-            {key:'3', value:'Styrofoam Cups'},
-            {key:'4', value:'Glass Fragments'},
-            {key:'5', value:'Metal Cans'},
-          ]
+        const [data, setData] = React.useState([]);
+
+        useEffect(() => {
+            fetchData();
+        }, []);
+
+        const fetchData = async () => {
+            try {
+
+                const response = await fetch(`${process.env.API_URL}/dropdownCommonItems`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+        
+                if (response.ok) {
+                    const results = await response.json();
+                    setData(results);
+                } else {
+                    throw new Error('Error fetching policy priority item data');
+                }
+            } catch (error) {
+                console.error('Error', 'Something went wrong. Please try again later.');
+            }
+        };
+
+        // Function to send data to the backend
+        const sendDataToBackend = async () => {
+            try {
+                const response = await fetch(`${process.env.API_URL}/updateCommonItems`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cleanup_id: route.params.cleanupInfo,
+                        common_items: selected
+                    })
+                });
+
+                if (response.ok) {
+                    // If data is successfully added to the database, navigate to "Map Count" screen
+                    navigation.navigate("Map Count", {cleanupInfo: route.params.cleanupInfo});
+                } else {
+                    throw new Error('Error adding data to the database');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+
 
         return(
         <View style= { background }>
@@ -34,7 +79,7 @@ import { background, heading, format, submit_button, submit_button_text } from "
             </View>
 
             <TouchableOpacity style={[submit_button, {marginBottom: '20%'}]}
-                onPress={() => navigation.navigate("Map Count")}>
+                onPress={sendDataToBackend }>
                 <View style={format}>
                 <Text style={submit_button_text}>NEXT</Text>
                 </View>
