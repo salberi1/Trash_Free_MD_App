@@ -74,7 +74,7 @@ export default function Create_Account_Password({navigation, route}){
                 last_name: route.params.lastname
             };
 
-            const response = await fetch('http://10.0.0.79:3000/createUser', {
+            const response = await fetch('http://54.80.166.215/createUser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

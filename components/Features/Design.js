@@ -103,11 +103,3 @@ export const item_text_box =  {
     marginBottom: 20
 }
 
-export const history_heading = {
-    fontSize: 24, 
-    paddingTop: 20, 
-    paddingBottom: 5, 
-    textAlign: 'center',
-    fontWeight: 'bold',
-    textDecorationLine: 'underline'
-}

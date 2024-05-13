@@ -24,7 +24,7 @@ export default function Signin({navigation})
           password: password,
          };
     
-         const response = await fetch('http://10.0.0.79:3000/userLogin',{
+         const response = await fetch('http://54.80.166.215/userLogin',{
             method: 'POST',
             headers:{
               'Content-Type': 'application/json',

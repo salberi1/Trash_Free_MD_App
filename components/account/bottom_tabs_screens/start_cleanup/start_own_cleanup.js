@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
 import React, { useState } from 'react';
-import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
-import { background, heading, format, make_cleanup_live_button, yes_no, submit_button, submit_button_text } from "../../../Features/Design.js";
+import { MultipleSelectList } from 'react-native-dropdown-select-list';
+import { background, heading, format, submit_button, submit_button_text } from "../../../Features/Design.js";
+import { list } from '../../../Features/Start_Own_Cleanup.js';
 
 
 
@@ -21,23 +22,25 @@ import { background, heading, format, make_cleanup_live_button, yes_no, submit_b
         return(
         <View style= { background }>
             <Text style={ heading }> Start Your Own Cleanup: </Text>
+            <TextInput 
+            label="Enter Time"
+            onChangeText ={(text) => setTime(text)}/>
             <View style={format}>
             <Text style={[ heading, {alignSelf: 'center', marginBottom: '5%'}]}> Policy Priority Items</Text>    
             <MultipleSelectList 
                 setSelected={(val) => setSelected(val)} 
                 data={data} 
-                boxStyles={styles.list}
+                boxStyles={list}
                 dropdownStyles={{backgroundColor: 'white'}}
                 save="value" 
                 label="Policy Priority Items"
             />
             </View>
 
-            <TouchableOpacity 
-                style={[submit_button, {marginBottom: '20%'}]}
+            <TouchableOpacity style={[submit_button, {marginBottom: '20%'}]}
                 onPress={() => navigation.navigate("Common Items")}>
                 <View style={format}>
-                <Text style={submit_button_text}>NEXT</Text>
+                <Text style={submit_button_text}>Next</Text>
                 </View>
             </TouchableOpacity>
 
@@ -46,24 +49,3 @@ import { background, heading, format, make_cleanup_live_button, yes_no, submit_b
         );
         
     };
-
-    const styles=StyleSheet.create({
-    
-        text: {
-            fontSize: 22,
-            textAlign: 'center',
-            marginTop: 40,
-            fontFamily: 'Times New Roman',
-            marginBottom: 10
-        },
-        required: {
-            fontSize: 15,
-            color: 'gray',
-            marginTop: 10,
-            marginBottom: 10
-        },
-        list: {
-            backgroundColor: 'white',
-            width: 300
-        },
-    });
