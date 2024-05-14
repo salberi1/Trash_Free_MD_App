@@ -101,7 +101,14 @@ function History() {
                     ))}
                 </Text>
                 <Text style={history_heading}>Priority Items</Text>
-                <Text style={styles.text}>{selectedCleanup[4]}</Text>
+                <Text style={styles.text}>
+                    {selectedCleanup[3].map((item, index) => (
+                        <React.Fragment key={index}>
+                            <Text>{item}</Text>
+                            {index !== selectedCleanup[3].length - 1 && <Text>{"\n"}</Text>}
+                        </React.Fragment>
+                    ))}
+                </Text>
                 <Text style={history_heading}>Total Items</Text>
                 <Text style={styles.text}>{selectedCleanup[5]}</Text>
                 {/* Add other cleanup details as needed */}
