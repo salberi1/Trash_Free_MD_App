@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Modal } from 'rea
 import { background, heading, format, submit_button, submit_button_text, history_heading } from "../../Features/Design.js";
 import { colors } from "../../Features/colors.js";
 import fetchProtectedData from './../getData.js'; 
+import { useFocusEffect } from '@react-navigation/native';
 
 function History() {
     const [selectedCleanup, setSelectedCleanup] = useState(null);
@@ -23,6 +24,13 @@ function History() {
         // Fetch user ID when component mounts
         fetchUserId();
     }, []);
+
+    // Fetch cleanups when the component is focused
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchUserId();
+        }, [])
+    );
 
     const fetchCleanups = async (user_id) => {
         try {
