@@ -1,25 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Modal } from 'react-native';
-import { background, heading, format, submit_button, submit_button_text, history_heading } from "../../Features/Design.js"
-import { colors } from "../../Features/colors.js"
+import { background, heading, format, submit_button, submit_button_text, history_heading } from "../../Features/Design.js";
+import { colors } from "../../Features/colors.js";
+import fetchProtectedData from './../getData.js'; 
 
 function History() {
     const [selectedCleanup, setSelectedCleanup] = useState(null);
     const [cleanups, setCleanups] = useState([]);
 
+    // Fetch user data when component mounts
+    const fetchUserId = async () => {
+        try {
+            const userData = await fetchProtectedData(); // Call the function to fetch user data
+            // Fetch cleanups after setting the user ID
+            fetchCleanups(userData.user.userId);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
     useEffect(() => {
-        // Fetch cleanups when component mounts
-        fetchCleanups();
+        // Fetch user ID when component mounts
+        fetchUserId();
     }, []);
 
-    const fetchCleanups = async () => {
+    const fetchCleanups = async (user_id) => {
         try {
-            const response = await fetch(`${process.env.API_URL}/getCleanupInfo/20`, {
+            const response = await fetch(`${process.env.API_URL}/getCleanupInfo/${user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
-                
             });
             if (response.ok) {
                 const data = await response.json();
@@ -32,6 +43,7 @@ function History() {
         }
     };
 
+
     const handleCleanupSelection = (cleanup) => {
         setSelectedCleanup(cleanup);
     };
@@ -43,15 +55,17 @@ function History() {
                 style={[styles.cleanups]}
                 onPress={() => handleCleanupSelection(cleanup)}
             >
-                <Text>Date: {cleanup[0]}</Text>
-                <Text>{cleanup.date}</Text>
+                <Text>{cleanup[0]}</Text>
+
             </TouchableOpacity>
         ));
     }
 
     return (
         <View style={background}>
+            <Text style={ heading }> PAST CLEANUPS </Text>
             <View style={styles.box}>
+            <Text style={ heading }> Select a Date: </Text>
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     {cleanup_info()}
                 </ScrollView>
@@ -66,11 +80,18 @@ function History() {
                 <Text style={history_heading}>Date</Text>
                 <Text style={styles.text}>{selectedCleanup[0]}</Text>
                 <Text style={history_heading}>Location</Text>
-                <Text style={styles.text}>{selectedCleanup[1]}</Text>
-                <Text style={history_heading}>Duration</Text>
                 <Text style={styles.text}>{selectedCleanup[2]}</Text>
+                <Text style={history_heading}>Duration</Text>
+                <Text style={styles.text}>{selectedCleanup[1]}</Text>
                 <Text style={history_heading}>Common Items</Text>
-                <Text style={styles.text}>{selectedCleanup[3]}</Text>
+                <Text style={styles.text}>
+                    {selectedCleanup[3].map((item, index) => (
+                        <React.Fragment key={index}>
+                            <Text>{item}</Text>
+                            {index !== selectedCleanup[3].length - 1 && <Text>{"\n"}</Text>}
+                        </React.Fragment>
+                    ))}
+                </Text>
                 <Text style={history_heading}>Priority Items</Text>
                 <Text style={styles.text}>{selectedCleanup[4]}</Text>
                 <Text style={history_heading}>Total Items</Text>
