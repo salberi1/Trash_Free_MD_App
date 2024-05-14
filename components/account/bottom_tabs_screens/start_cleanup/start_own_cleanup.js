@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, TouchableOpacity, SafeAreaView, TextInput, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
 import { background, heading, format, make_cleanup_live_button, yes_no, submit_button, submit_button_text } from "../../../Features/Design.js";
+import fetchProtectedData from './../../getData.js'; 
 
 
 
@@ -10,13 +11,70 @@ import { background, heading, format, make_cleanup_live_button, yes_no, submit_b
         const [addres, setAddress] = React.useState([]);
         const [time, setTime ] = useState('');
         const [selected, setSelected ] = React.useState([]);
-        const data = [
-            {key:'1', value:'Plastic Grocery Bags'},
-            {key:'2', value:'Plastic Bottles'},
-            {key:'3', value:'Styrofoam Cups'},
-            {key:'4', value:'Glass Fragments'},
-            {key:'5', value:'Metal Cans'},
-          ]
+        const [data, setData] = React.useState([]);
+        const [userId, setUserId] = useState('');
+
+        useEffect(() => {
+            fetchData();
+            fetchUserId(); // Fetch user ID when component mounts
+        }, []);
+
+        const fetchData = async () => {
+            try {
+
+                const response = await fetch(`${process.env.API_URL}/dropdownPriorityItems`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+        
+                if (response.ok) {
+                    const results = await response.json();
+                    setData(results);
+                } else {
+                    throw new Error('Error fetching policy priority item data');
+                }
+            } catch (error) {
+                console.error('Error', 'Something went wrong. Please try again later.');
+            }
+        };
+
+        // Fetch user data when component mounts
+        const fetchUserId = async () => {
+            try {
+                const userData = await fetchProtectedData(); // Call the function to fetch user data
+                setUserId(userData.user.userId); // Set the user's first name in state
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        // Function to send data to the backend
+        const sendDataToBackend = async () => {
+            try {
+                // Assuming there is an API endpoint to add data to the database
+                const response = await fetch(`${process.env.API_URL}/insertPriorityItems`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        priority_items: selected
+                    })
+                });
+
+                if (response.ok) {
+                    const cleanupInfo = await response.json(); // Get the response from the server
+                    navigation.navigate('Common Items', {cleanupInfo});
+                } else {
+                    throw new Error('Error adding data to the database');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
 
         return(
         <View style= { background }>
@@ -35,7 +93,7 @@ import { background, heading, format, make_cleanup_live_button, yes_no, submit_b
 
             <TouchableOpacity 
                 style={[submit_button, {marginBottom: '20%'}]}
-                onPress={() => navigation.navigate("Common Items")}>
+                onPress={sendDataToBackend}>
                 <View style={format}>
                 <Text style={submit_button_text}>NEXT</Text>
                 </View>

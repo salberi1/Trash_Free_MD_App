@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 const fetchProtectedData = async () => {
     try {
         const token = await AsyncStorage.getItem('token');
 
-        const response = await fetch('http://10.0.0.79:3000/protected-route', {
+        const response = await fetch(`${process.env.API_URL}/protected-route`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -19,7 +20,7 @@ const fetchProtectedData = async () => {
             throw new Error('Error fetching protected data');
         }
     } catch (error) {
-        throw new Error('Error fetching protected data');
+        console.error('Error', 'Something went wrong. Please try again later.');
     }
 };
 

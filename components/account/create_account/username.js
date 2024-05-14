@@ -9,7 +9,7 @@ export default function Create_Account_Username({navigation, route}){
 
     const validateUsername = async () => {
         try {
-            const response = await fetch('http://10.0.0.79:3000/checkUsername', {
+            const response = await fetch(`${process.env.API_URL}/checkUsername`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

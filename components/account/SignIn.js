@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { background, format, submit_button, heading, submit_button_text } from "../Features/Design.js"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 export default function Signin({navigation})
 {
     const [username, setUsername] = useState('username');
@@ -23,8 +24,8 @@ export default function Signin({navigation})
           username: username,
           password: password,
          };
-    
-         const response = await fetch('http://10.0.0.79:3000/userLogin',{
+
+         const response = await fetch(`${process.env.API_URL}/userLogin`,{
             method: 'POST',
             headers:{
               'Content-Type': 'application/json',
@@ -36,7 +37,6 @@ export default function Signin({navigation})
           //user signed in successfully
           const data = await response.json();
           await storeToken(data.token); // Store the token received from the server
-          Alert.alert('Signed in Successfully');
           navigation.navigate("Home Page");
          }
     

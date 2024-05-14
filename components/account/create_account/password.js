@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Button, Alert, SafeAreaView, TextInput, Touchab
 import { background, submit_button, format, submit_button_text, heading, text_box, make_cleanup_live_button } from "../../Features/Design.js";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 export default function Create_Account_Password({navigation, route}){
 
     const [password, setPassword] = useState('');
@@ -74,7 +75,7 @@ export default function Create_Account_Password({navigation, route}){
                 last_name: route.params.lastname
             };
 
-            const response = await fetch('http://10.0.0.79:3000/createUser', {
+            const response = await fetch(`${process.env.API_URL}/createUser`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

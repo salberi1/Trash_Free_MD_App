@@ -15,7 +15,7 @@ export default function Create_Account_Contact({ navigation, route }) {
             setEmailError('Email is required');
         } else {
             try {
-                const response = await fetch('http://10.0.0.79:3000/checkEmail', {
+                const response = await fetch(`${process.env.API_URL}/checkEmail`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
