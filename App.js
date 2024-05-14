@@ -12,10 +12,10 @@ import Create_Account from './components/account/create_account.js';
 import Make_Cleanup_Live_Org from './components/organization_using_app/make_cleanup_live.js';
 import Volunteers_Join from './components/organization_using_app/volunteers_join.js';
 import IndividualAccount from './components/account/individual_account.js';
-import Create_Account_Names from './components/create_account/name.js';
-import Create_Account_Contact from './components/create_account/contact.js';
-import Create_Account_Username from './components/create_account/username.js';
-import Create_Account_Password from './components/create_account/password.js';
+import Create_Account_Names from './components/account/create_account/name.js';
+import Create_Account_Contact from './components/account/create_account/contact.js';
+import Create_Account_Username from './components/account/create_account/username.js';
+import Create_Account_Password from './components/account/create_account/password.js';
 
 
 const Stack = createStackNavigator();
