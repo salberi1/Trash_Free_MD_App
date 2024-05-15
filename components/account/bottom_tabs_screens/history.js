@@ -31,6 +31,7 @@ function History() {
         }, [])
     );
 
+
     const fetchCleanups = async (user_id) => {
         try {
             const response = await fetch(`${process.env.API_URL}/getCleanupInfo/${user_id}`, {

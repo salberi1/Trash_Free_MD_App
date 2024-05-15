@@ -39,7 +39,6 @@ import { background, heading, format, submit_button, submit_button_text } from "
 
         return (
             <View style={background}>
-                <Text style={heading}> Common Items: </Text>
                 <View style={format}>
                     <Text style={[heading, { alignSelf: 'center', marginBottom: '5%' }]}> Common Items</Text>
                     <MultipleSelectList

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput, ScrollView, Alert } from 'react-native';
 import React, { useState, useRef } from 'react';
 import { background, submit_button, format, submit_button_text } from '../../../Features/Design';
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from 'react-native-maps';
@@ -75,12 +75,18 @@ export default function Map_Count({navigation, route}){
 
     const handleNextPress = () => {
         if (validateForm()) {
-            navigation.navigate("Submit Cleanup", {
-                priority: route.params.priority, 
-                common: route.params.common,
-                location: selectedDescription,
-                duration: stopwatchTimerRef.current?.getSnapshot()
-            });
+            Alert.alert('Is your cleanup finished?', "If not then press 'Stay Here'. If yes then press 'Proceed to Next Page' where you'll fill out a form. Once you go to the next page you won't be able to go back.", [
+                {
+                  text: 'Stay Here',
+                  style: 'cancel',
+                },
+                {text: 'Proceed to next page', onPress: () => navigation.navigate("Submit Cleanup", {
+                    priority: route.params.priority, 
+                    common: route.params.common,
+                    location: selectedDescription,
+                    duration: stopwatchTimerRef.current?.getSnapshot()
+                })},
+              ]);
         }
     };
 

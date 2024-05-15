@@ -17,10 +17,10 @@ const Stack = createStackNavigator();
 function StartCleanupStack() {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Start Own Cleanup" component={Start_Own_Cleanup} />
-            <Stack.Screen name="Common Items" component={Common_Items} />
-            <Stack.Screen name="Map Count" component={Map_Count} />
-            <Stack.Screen name="Submit Cleanup" component={Submit_Cleanup}/>
+            <Stack.Screen name="Start Own Cleanup" component={Start_Own_Cleanup} options={{headerShown: false, title: 'Policy Priority Items'}}/>
+            <Stack.Screen name="Common Items" component={Common_Items} options={{title: ''}}/>
+            <Stack.Screen name="Map Count" component={Map_Count} options={{title: ''}}/>
+            <Stack.Screen name="Submit Cleanup" component={Submit_Cleanup} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }
