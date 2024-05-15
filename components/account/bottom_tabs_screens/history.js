@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Modal } from 'react-native';
+import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Modal, ActivityIndicator } from 'react-native';
 import { background, heading, format, submit_button, submit_button_text, history_heading } from "../../Features/Design.js";
 import { colors } from "../../Features/colors.js";
 import fetchProtectedData from './../getData.js'; 
@@ -8,22 +8,21 @@ import { useFocusEffect } from '@react-navigation/native';
 function History() {
     const [selectedCleanup, setSelectedCleanup] = useState(null);
     const [cleanups, setCleanups] = useState([]);
+    const [loading, setLoading] = useState(true); // Added loading state
 
+    // Fetch user data when component mounts
     // Fetch user data when component mounts
     const fetchUserId = async () => {
         try {
             const userData = await fetchProtectedData(); // Call the function to fetch user data
             // Fetch cleanups after setting the user ID
+            
             fetchCleanups(userData.user.userId);
         } catch (error) {
             console.error('Error fetching user data:', error);
+            setLoading(false); // Set loading to false in case of error
         }
     };
-
-    useEffect(() => {
-        // Fetch user ID when component mounts
-        fetchUserId();
-    }, []);
 
     // Fetch cleanups when the component is focused
     useFocusEffect(
@@ -48,9 +47,10 @@ function History() {
             }
         } catch (error) {
             console.error('Error fetching cleanups:', error);
+        } finally {
+            setLoading(false); // Set loading to false after cleanup data is fetched or in case of error
         }
     };
-
 
     const handleCleanupSelection = (cleanup) => {
         setSelectedCleanup(cleanup);
@@ -64,9 +64,17 @@ function History() {
                 onPress={() => handleCleanupSelection(cleanup)}
             >
                 <Text>{cleanup[0]}</Text>
-
             </TouchableOpacity>
         ));
+    }
+
+    if (loading) {
+        // If loading is true, display ActivityIndicator
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
     }
 
     return (
@@ -102,10 +110,10 @@ function History() {
                 </Text>
                 <Text style={history_heading}>Priority Items</Text>
                 <Text style={styles.text}>
-                    {selectedCleanup[3].map((item, index) => (
+                    {selectedCleanup[4].map((item, index) => (
                         <React.Fragment key={index}>
                             <Text>{item}</Text>
-                            {index !== selectedCleanup[3].length - 1 && <Text>{"\n"}</Text>}
+                            {index !== selectedCleanup[4].length - 1 && <Text>{"\n"}</Text>}
                         </React.Fragment>
                     ))}
                 </Text>

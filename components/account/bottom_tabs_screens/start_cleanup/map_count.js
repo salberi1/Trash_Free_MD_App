@@ -17,50 +17,72 @@ export default function Map_Count({navigation, route}){
         longitudeDelta: 0.05,
     });
 
-    const [selectedDescription, setSelectedDescription] = useState(""); // State to store the selected location description
+    const [selectedDescription, setSelectedDescription] = useState("");
+    const [radius, setRadius] = useState(1000);
+    const [locationError, setLocationError] = useState('');
+    const [stopwatchError, setStopwatchError] = useState('');
+    const stopwatchTimerRef = useRef(null);
+    const [isRunning, setIsRunning] = useState(false);
+    const [finalTime, setFinalTime] = useState(0);
 
     const handleLocationSelect = (data, details) => {
-        
-        const { formatted_address } = details; // Extract description from details
-
-        const {geometry} = details;
-        const {location} = geometry;
-
+        const { formatted_address } = details;
+        const { geometry } = details;
+        const { location } = geometry;
         setRegion({
             latitude: location.lat,
             longitude: location.lng,
             latitudeDelta: 0.05,
             longitudeDelta: 0.05,
         });
-
-        // Store the description in selectedDescription state
         setSelectedDescription(formatted_address);
-
     };
-    const [radius, setRadius] = useState(1000)
-    const stopwatchTimerRef = useRef(null);
-    const [isRunning, setIsRunning] = useState(false);
-    const [finalTime, setFinalTime] = useState(0);
 
-    function handlePlayPause() {
+    const handlePlayPause = () => {
         if (isRunning) {
             stopwatchTimerRef.current?.pause();
         } else {
             stopwatchTimerRef.current?.play();
         }
-    
         setIsRunning(!isRunning);
-    }
+    };
 
-    function handleReset() {
+    const handleReset = () => {
         stopwatchTimerRef.current?.reset();
         setIsRunning(false);
-    }  
+    };
 
-    function handleTimeElapsed(time) {
+    const handleTimeElapsed = (time) => {
         setFinalTime(time);
-        console.log(finalTime);
-    }
+    };
+
+    const validateForm = () => {
+        let isValid = true;
+        if (!selectedDescription) {
+            setLocationError('Must enter a location');
+            isValid = false;
+        } else {
+            setLocationError('');
+        }
+        if (isRunning) {
+            setStopwatchError('Must pause stopwatch before continuing');
+            isValid = false;
+        } else {
+            setStopwatchError('');
+        }
+        return isValid;
+    };
+
+    const handleNextPress = () => {
+        if (validateForm()) {
+            navigation.navigate("Submit Cleanup", {
+                priority: route.params.priority, 
+                common: route.params.common,
+                location: selectedDescription,
+                duration: stopwatchTimerRef.current?.getSnapshot()
+            });
+        }
+    };
 
     return(
     <View style={ background }>
@@ -130,9 +152,10 @@ export default function Map_Count({navigation, route}){
                         <Text>Reset</Text>
                     </TouchableOpacity>
                 </View>
-
+                {locationError ? <Text style={styles.errorLocation}>{locationError}</Text> : null}
+                {stopwatchError ? <Text style={styles.errorStopWatch}>{stopwatchError}</Text> : null}
                 <TouchableOpacity style={[submit_button, {height: 50, width: 100}]}
-                    onPress={() => navigation.navigate("Submit Cleanup", {cleanupInfo: route.params.cleanupInfo, location: selectedDescription, duration: stopwatchTimerRef.current?.getSnapshot()})}> 
+                    onPress={handleNextPress}>
                     <View style={format}>
                         <Text style={submit_button_text}>NEXT</Text>
                     </View>
@@ -183,4 +206,16 @@ const styles = StyleSheet.create({
         backgroundColor: colors.colors.Moss_Green,
         borderRadius: 5,
     },
-});
+    errorLocation: {
+        color: 'red',
+        textAlign: 'center',
+        marginBottom: -15, // Adjusted margin
+        marginTop: 15 // Adjusted margin
+    },
+    errorStopWatch: {
+        color: 'red',
+        textAlign: 'center',
+        marginBottom: -25, // Adjusted margin
+        marginTop: 15 // Adjusted margin
+    }
+});7

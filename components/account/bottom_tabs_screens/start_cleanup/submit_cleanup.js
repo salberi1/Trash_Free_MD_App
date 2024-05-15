@@ -4,46 +4,24 @@ import React, { useState, useEffect } from 'react';
 import { MultipleSelectList, SelectList} from 'react-native-dropdown-select-list';
 import { background, heading, format, submit_button_text, item_text_box, submit_button } from "../../../Features/Design.js";
 import DatePicker from 'react-native-modern-datepicker';
+import fetchProtectedData from './../../getData.js'; 
 
 export default function Submit_Cleanup({navigation, route}){
-    const [common_items, setCommon_items] = React.useState([]);
-    const [priority_items, setPriority_items] = React.useState([]);
+    const common_items = route.params.common;
+    const priority_items = route.params.priority;
 
     const [commonItemValues, setCommonItemValues] = useState(Array(common_items.length).fill(''));
     const [priorityItemValues, setPriorityItemValues] = useState(Array(priority_items.length).fill(''));
 
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const fetchData = async () => {
+    const fetchUserId = async () => {
         try {
-            const response = await fetch(`${process.env.API_URL}/selectedItems?cleanupId=${route.params.cleanupInfo}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-    
-            if (response.ok) {
-                const { common, priority } = await response.json();
-                const commonValues = {};
-                const priorityValues = {};
-
-                // Initialize values for text inputs
-                common.forEach((item) => (commonValues[item] = ''));
-                priority.forEach((item) => (priorityValues[item] = ''));
-
-                setCommon_items(common);
-                setPriority_items(priority);
-                setCommonItemValues(commonValues);
-                setPriorityItemValues(priorityValues);
-            } else {
-                throw new Error('Error fetching items');
-            }
+            const userData = await fetchProtectedData(); // Call the function to fetch user data
+            // Fetch cleanups after setting the user ID
+            
+            handleSubmit(userData.user.userId);
         } catch (error) {
-            console.error('Error', 'Something went wrong. Please try again later.');
+            console.error('Error fetching user data:', error);
+            setLoading(false); // Set loading to false in case of error
         }
     };
 
@@ -56,27 +34,28 @@ export default function Submit_Cleanup({navigation, route}){
         setCommonItemValues((prevValues) => ({ ...prevValues, [item]: text }));
     };
 
-
     const [selectedDate, setSelectedDate] = useState('');
     const currentDate = new Date();     // Holds information of curent date
     
-     const handleSubmit = async () => {
+     const handleSubmit = async (user_id) => {
         try {
 
             const formattedTime = formatMilliseconds(route.params.duration);
-
-            const response = await fetch(`${process.env.API_URL}/updateAllItems`, {
-                method: 'PUT',
+     
+            const response = await fetch(`${process.env.API_URL}/insertSelectedItems`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    cleanup_id: route.params.cleanupInfo,
-                    priority_Items: priorityItemValues,
-                    common_Items: commonItemValues,
+                    user_id: user_id,
+                    priority_Items: priority_items,
+                    common_Items: common_items,
                     location: route.params.location,
                     time_duration: formattedTime,
-                    date: currentDate
+                    date: currentDate,
+                    common_values: commonItemValues,
+                    priority_values: priorityItemValues,
                 })
             });
 
@@ -86,11 +65,12 @@ export default function Submit_Cleanup({navigation, route}){
                 Alert.alert('Congrats!', "You have completed a cleanup! To see information about your cleanup, click 'History' and select your desired date", [
                     {
                       text: 'Maybe Later',
-                      onPress: () => navigation.navigate("Start Own Cleanup"),
                       style: 'cancel',
                     },
                     {text: 'History', onPress: () => navigation.navigate("History")},
                   ]);
+
+                  navigation.navigate("Start Own Cleanup");
               
             } else {
                 throw new Error('Error updating items');
@@ -133,7 +113,7 @@ export default function Submit_Cleanup({navigation, route}){
                         <TextInput
                             style={item_text_box}
                             value={priorityItemValues[index]}
-                            onChangeText={(text) => handlePriorityItemChange(text, item)}
+                            onChangeText={(text) => handlePriorityItemChange(text, index)}
                         />
                     </View>
                 ))}
@@ -148,7 +128,7 @@ export default function Submit_Cleanup({navigation, route}){
                         <TextInput
                             style={item_text_box}
                             value={commonItemValues[index]}
-                            onChangeText={(text) => handleCommonItemChange(text, item)}
+                            onChangeText={(text) => handleCommonItemChange(text, index)}
                         />
                     </View>
                 ))}
@@ -157,7 +137,7 @@ export default function Submit_Cleanup({navigation, route}){
             <DatePicker
                 onSelectedDate={ date => setSelectedDate(date)}
             />
-            <TouchableOpacity style={[submit_button, {marginBottom: '30%', alignSelf: 'center'}]} onPress={handleSubmit}>
+            <TouchableOpacity style={[submit_button, {marginBottom: '30%', alignSelf: 'center'}]} onPress={fetchUserId}>
             <View style={format}>
                 <Text style={submit_button_text}>SUBMIT</Text>
                 </View>

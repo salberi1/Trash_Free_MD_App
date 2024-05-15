@@ -3,7 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const fetchProtectedData = async () => {
     try {
+    
         const token = await AsyncStorage.getItem('token');
+        console.log("Token: ", token);
 
         const response = await fetch(`${process.env.API_URL}/protected-route`, {
             method: 'GET',

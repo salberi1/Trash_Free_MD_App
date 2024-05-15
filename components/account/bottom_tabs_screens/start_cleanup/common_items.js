@@ -6,10 +6,8 @@ import { background, heading, format, submit_button, submit_button_text } from "
 
 
     export default function Common_Items({navigation, route }){
-        const [addres, setAddress] = React.useState([]);
-        const [time, setTime ] = useState('');
-        const [selected, setSelected ] = React.useState([]);
-        const [data, setData] = React.useState([]);
+        const [data, setData] = useState([]);
+        const [selected, setSelected] = useState([]);
 
         useEffect(() => {
             fetchData();
@@ -17,14 +15,13 @@ import { background, heading, format, submit_button, submit_button_text } from "
 
         const fetchData = async () => {
             try {
-
                 const response = await fetch(`${process.env.API_URL}/dropdownCommonItems`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
-        
+
                 if (response.ok) {
                     const results = await response.json();
                     setData(results);
@@ -36,57 +33,32 @@ import { background, heading, format, submit_button, submit_button_text } from "
             }
         };
 
-        // Function to send data to the backend
-        const sendDataToBackend = async () => {
-            try {
-                const response = await fetch(`${process.env.API_URL}/updateCommonItems`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        cleanup_id: route.params.cleanupInfo,
-                        common_items: selected
-                    })
-                });
-
-                if (response.ok) {
-                    // If data is successfully added to the database, navigate to "Map Count" screen
-                    navigation.navigate("Map Count", {cleanupInfo: route.params.cleanupInfo});
-                } else {
-                    throw new Error('Error adding data to the database');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
+        const handleNextPress = () => {
+            navigation.navigate("Map Count", { priority: route.params.selected, common: selected });
         };
 
-
-
-        return(
-        <View style= { background }>
-            <Text style={ heading }> Common Items: </Text>
-            <View style={format}>
-            <Text style={[ heading, {alignSelf: 'center', marginBottom: '5%'}]}> Common Items</Text>    
-            <MultipleSelectList 
-                setSelected={(val) => setSelected(val)} 
-                data={data} 
-                boxStyles={styles.list}
-                dropdownStyles={{backgroundColor: 'white'}}
-                save="value" 
-                label="Common Items"
-            />
-            </View>
-
-            <TouchableOpacity style={[submit_button, {marginBottom: '20%'}]}
-                onPress={sendDataToBackend }>
+        return (
+            <View style={background}>
+                <Text style={heading}> Common Items: </Text>
                 <View style={format}>
-                <Text style={submit_button_text}>NEXT</Text>
+                    <Text style={[heading, { alignSelf: 'center', marginBottom: '5%' }]}> Common Items</Text>
+                    <MultipleSelectList
+                        setSelected={(val) => setSelected(val)}
+                        data={data}
+                        boxStyles={styles.list}
+                        dropdownStyles={{ backgroundColor: 'white' }}
+                        save="value"
+                        label="Common Items"
+                    />
                 </View>
-            </TouchableOpacity>
-
-
-        </View>
+                <TouchableOpacity
+                    style={[submit_button, { marginBottom: '20%' }]}
+                    onPress={handleNextPress}>
+                    <View style={format}>
+                        <Text style={submit_button_text}>NEXT</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
         );
         
     };
